@@ -11,7 +11,7 @@ def create_bucket(s3_client, bucket_name: str) -> dict[str, str]:
         return {"ok": "Бакет создан"}
 
 
-def pipeline(table_name: str, date_column: str = None):
+def pipeline(table_name: str, date_column: str = None, transform_outliers: bool = True):
 
     create_bucket(
         s3_client=s3_client,
@@ -41,6 +41,7 @@ def pipeline(table_name: str, date_column: str = None):
 
     df = transforms_null_values(df=df)
 
-    df = transforms_outliers(df=df)
+    if transform_outliers:
+        df = transforms_outliers(df=df)
 
     return df
