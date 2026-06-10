@@ -51,7 +51,28 @@ services:
     volumes:
       - ./notebooks:/home/${JUPYTER_USER}/work
 
+  superset:
+    build: ./superset/
+    container_name: superset_hse
+    restart: on-failure
+    ports:
+      - "8088:8088"
+    environment:
+      SUPERSET_SECRET_KEY: ${SUPERSET_SECRET_KEY}
+      SUPERSET_ADMIN_USERNAME: ${SUPERSET_ADMIN_USERNAME}
+      SUPERSET_ADMIN_PASSWORD: ${SUPERSET_ADMIN_PASSWORD}
+      SUPERSET_ADMIN_FIRST_NAME: ${SUPERSET_ADMIN_FIRST_NAME}
+      SUPERSET_ADMIN_LAST_NAME: ${SUPERSET_ADMIN_LAST_NAME}
+      SUPERSET_ADMIN_EMAIL: ${SUPERSET_ADMIN_EMAIL}
+      
+    command: ["bash", "/init.sh"]
+    volumes:
+      - superset_home:/app/superset_home
+    depends_on:
+      - postgres
+
 
 volumes:
   postgres_data:
   minio_data:
+  superset_home:
