@@ -1,5 +1,5 @@
 services:
-  postgres_db:
+  postgres:
     image: postgres:17-alpine
     container_name: postgres_hse
     restart: on-failure
@@ -12,8 +12,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./postgres/init:/docker-entrypoint-initdb.d
-      
-  minio_s3:
+
+  minio:
     image: minio/minio:RELEASE.2025-09-07T16-13-09Z
     container_name: minio_hse
     restart: on-failure
@@ -37,13 +37,13 @@ services:
       JUPYTER_USER: ${JUPYTER_USER}
       JUPYTER_PASSWORD: ${JUPYTER_PASSWORD}
 
-      DB_HOST: postgres_db
+      DB_HOST: postgres
       DB_PORT: 5432
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
 
-      S3_URL: http://minio_s3:9000
+      S3_URL: http://minio:9000
       S3_USER: ${MINIO_USER}
       S3_PASSWORD: ${MINIO_PASSWORD}
 
