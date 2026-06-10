@@ -42,6 +42,8 @@ wheels/
 .pytest_cache/
 .coverage
 htmlcov/
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
 
 # Node
 node_modules/

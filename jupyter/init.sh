@@ -7,4 +7,9 @@ fi
 
 echo "$JUPYTER_USER:$JUPYTER_PASSWORD" | chpasswd
 
-exec jupyterhub --Authenticator.allow_all=True
+mkdir -p "/home/$JUPYTER_USER/.local/share/jupyter/runtime"
+mkdir -p "/home/$JUPYTER_USER/work"
+
+chown -R "$JUPYTER_USER:$JUPYTER_USER" "/home/$JUPYTER_USER"
+
+exec jupyterhub -f /jupyterhub_config.py

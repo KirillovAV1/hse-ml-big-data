@@ -7,3 +7,5 @@ seaborn
 scikit-learn 
 sqlalchemy
 boto3
+pydantic
+psycopg2-binary
