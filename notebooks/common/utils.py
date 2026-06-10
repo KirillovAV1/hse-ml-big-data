@@ -23,7 +23,7 @@ def pipeline(table_name: str, date_column: str = None):
     if not date_column:
         load_df_to_s3(
             df=df, 
-            table_name=table_name, 
+            filename=table_name, 
             prefix="raw"
         )
     else:
@@ -41,4 +41,3 @@ def pipeline(table_name: str, date_column: str = None):
     df = transforms_outliers(df=df)
 
     return df
-
