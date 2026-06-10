@@ -11,7 +11,8 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-  
+      - ./postgres/init:/docker-entrypoint-initdb.d
+      
   minio_s3:
     image: minio/minio:RELEASE.2025-09-07T16-13-09Z
     container_name: minio_hse

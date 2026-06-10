@@ -1,5 +1,5 @@
 -- Таблица маршрутов (склад → клиент)
-CREATE TABLE deliveries (
+CREATE TABLE IF NOT EXISTS deliveries (
     delivery_id SERIAL PRIMARY KEY,
     date DATE,
     source TEXT,
@@ -15,7 +15,7 @@ CREATE TABLE deliveries (
 );
 
 -- Таблица водителей
-CREATE TABLE drivers (
+CREATE TABLE IF NOT EXISTS drivers (
     driver_id SERIAL PRIMARY KEY,
     name TEXT,
     experience_years INT,
@@ -23,7 +23,7 @@ CREATE TABLE drivers (
 );
 
 -- Таблица транспорта
-CREATE TABLE vehicles (
+CREATE TABLE IF NOT EXISTS vehicles (
     vehicle_id SERIAL PRIMARY KEY,
     plate_number TEXT,
     capacity_ton NUMERIC(8,2),

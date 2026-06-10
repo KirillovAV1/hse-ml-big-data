@@ -1,5 +1,5 @@
 -- Справочник насосов
-CREATE TABLE pumps (
+CREATE TABLE IF NOT EXISTS pumps (
     pump_id SERIAL PRIMARY KEY,
     well_id INT REFERENCES wells(well_id),
     type TEXT,
@@ -9,7 +9,7 @@ CREATE TABLE pumps (
 );
 
 -- Потоковые данные о состоянии насосов (пример: каждую минуту)
-CREATE TABLE pump_sensors (
+CREATE TABLE IF NOT EXISTS pump_sensors (
     record_id SERIAL PRIMARY KEY,
     pump_id INT REFERENCES pumps(pump_id),
     timestamp TIMESTAMP,
@@ -21,7 +21,7 @@ CREATE TABLE pump_sensors (
 );
 
 -- Факты отказов насосов
-CREATE TABLE pump_failures (
+CREATE TABLE IF NOT EXISTS pump_failures (
     failure_id SERIAL PRIMARY KEY,
     pump_id INT REFERENCES pumps(pump_id),
     failure_date TIMESTAMP,

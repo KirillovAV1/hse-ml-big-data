@@ -1,5 +1,5 @@
 -- Таблица со справочной информацией о скважинах
-CREATE TABLE wells (
+CREATE TABLE IF NOT EXISTS wells (
     well_id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     field_name TEXT,              -- название месторождения
@@ -10,7 +10,7 @@ CREATE TABLE wells (
 );
 
 -- Таблица ежедневных производственных показателей
-CREATE TABLE production (
+CREATE TABLE IF NOT EXISTS production (
     prod_id SERIAL PRIMARY KEY,
     well_id INT REFERENCES wells(well_id),
     date DATE NOT NULL,

@@ -1,4 +1,4 @@
-CREATE TABLE oil_stations (
+CREATE TABLE IF NOT EXISTS oil_stations (
     station_id SERIAL PRIMARY KEY,
     station_name VARCHAR(100),
     latitude FLOAT,
