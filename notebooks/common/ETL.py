@@ -86,3 +86,18 @@ def transforms_null_values(df: pd.DataFrame) -> pd.DataFrame:
             df[column] = df[column].fillna("Нет данных")
 
     return df
+
+
+def transforms_outliers(df: pd.DataFrame) -> pd.DataFrame: 
+    for column in df.columns:
+        if "_id" in column or not is_numeric_dtype(df[column]):
+            continue
+
+        Q1 = df[column].quantile(0.25) 
+        Q3 = df[column].quantile(0.75) 
+        IQR = Q3 - Q1 
+
+        lower_bound = Q1 - 1.5 * IQR 
+        upper_bound = Q3 + 1.5 * IQR 
+        df = df[(df[column] >= lower_bound) & (df[column] <= upper_bound)]
+    return df 
