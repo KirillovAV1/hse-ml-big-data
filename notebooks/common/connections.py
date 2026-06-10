@@ -31,13 +31,6 @@ class Settings:
             aws_secret_access_key=self.S3_PASSWORD,
         )
 
-def create_bucket(s3_client, bucket_name: str):
-    try:
-        s3_client.head_bucket(Bucket=bucket_name)
-        return {"ok": "Бакет существует"}
-    except:
-        s3_client.create_bucket(Bucket=bucket_name)
-        return {"ok": "Бакет создан"}
 
 settings = Settings()
 
@@ -45,8 +38,4 @@ engine = sqlalchemy.create_engine(settings.DB_URL)
 
 s3_client = settings.S3_CLIENT
 
-create_bucket(
-    s3_client=s3_client,
-    bucket_name=settings.BUCKET_NAME
-)
 
