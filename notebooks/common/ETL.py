@@ -1,7 +1,7 @@
 import boto3
 import sqlalchemy
 import pandas as pd
-from io import StringIO
+from io import StringIO, BytesIO
 from common.connections import engine, s3_client, settings
 
 
@@ -9,6 +9,33 @@ def extract_df_from_db(table_name: str) -> pd.DataFrame:
     with engine.begin() as conn:
         df = pd.read_sql(f"SELECT * FROM {table_name};", conn)
     return df
+
+def extract_csv_from_s3(table_name: str, prefix: str) -> pd.DataFrame:
+    path = f"{prefix}/{table_name}/"
+
+    response = s3_client.list_objects_v2(
+        Bucket=settings.BUCKET_NAME,
+        Prefix=path
+    )
+
+    dfs = []
+
+    for obj in response.get("Contents", []):
+        key = obj["Key"]
+
+        if not key.endswith(".csv"):
+            continue
+
+        file_response = s3_client.get_object(
+            Bucket=settings.BUCKET_NAME,
+            Key=key
+        )
+
+        df_part = pd.read_csv(BytesIO(file_response["Body"].read()))
+        dfs.append(df_part)
+
+
+    return pd.concat(dfs, ignore_index=True)
 
 
 def load_df_to_s3(
