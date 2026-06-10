@@ -101,3 +101,12 @@ def transforms_outliers(df: pd.DataFrame) -> pd.DataFrame:
         upper_bound = Q3 + 1.5 * IQR 
         df = df[(df[column] >= lower_bound) & (df[column] <= upper_bound)]
     return df 
+
+
+def save_mart(df: pd.DataFrame, table_name: str) -> None:
+    df.to_sql(
+        name=table_name,
+        con=engine,
+        if_exists="replace",
+        index=False
+    )
