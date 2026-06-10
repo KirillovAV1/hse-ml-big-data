@@ -35,7 +35,18 @@ services:
     environment:
       JUPYTER_USER: ${JUPYTER_USER}
       JUPYTER_PASSWORD: ${JUPYTER_PASSWORD}
+
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+      S3_URL: http://minio_s3:9000
+      S3_USER: ${MINIO_USER}
+      S3_PASSWORD: ${MINIO_PASSWORD}
+      
     command: ["bash", "/init.sh"]
+    volumes:
+      - ./notebooks:/home/${JUPYTER_USER}/work
 
 
 volumes:
