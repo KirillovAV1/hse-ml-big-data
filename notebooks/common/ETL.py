@@ -51,7 +51,7 @@ def load_df_to_s3(
 
     s3_client.put_object(
         Bucket=settings.BUCKET_NAME,
-        Key=f"{prefix}/{filename}.csv",
+        Key=f"{prefix}/{filename}/{filename}.csv",
         Body=csv_buffer.getvalue()
     )
 
