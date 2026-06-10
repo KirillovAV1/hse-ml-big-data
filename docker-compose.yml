@@ -1,7 +1,7 @@
 services:
   postgres_db:
     image: postgres:17-alpine
-    container_name: postgres
+    container_name: postgres_hse
     restart: on-failure
     ports:
       - "5434:5432"
@@ -13,8 +13,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
   
   minio_s3:
-    image: minio/minio:RELEASE.2025-09-06T16-13-09Z
-    container_name: minio
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+    container_name: minio_hse
     restart: on-failure
     command: server /data --console-address ":9001"
     ports:
@@ -25,6 +25,18 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
     volumes:
       - minio_data:/data
+
+  jupyter:
+    build: ./jupyter/
+    container_name: jupyter_hse
+    restart: on-failure
+    ports:
+      - "8000:8000"
+    environment:
+      JUPYTER_USER: ${JUPYTER_USER}
+      JUPYTER_PASSWORD: ${JUPYTER_PASSWORD}
+    command: ["bash", "/init.sh"]
+
 
 volumes:
   postgres_data:
