@@ -2,6 +2,7 @@ import boto3
 import sqlalchemy
 import pandas as pd
 from io import StringIO, BytesIO
+from pandas.api.types import is_numeric_dtype
 from common.connections import engine, s3_client, settings
 
 
@@ -9,6 +10,7 @@ def extract_df_from_db(table_name: str) -> pd.DataFrame:
     with engine.begin() as conn:
         df = pd.read_sql(f"SELECT * FROM {table_name};", conn)
     return df
+
 
 def extract_csv_from_s3(table_name: str, prefix: str) -> pd.DataFrame:
     path = f"{prefix}/{table_name}/"
@@ -72,3 +74,15 @@ def load_partitioned_df_to_s3(
             Key=f"{prefix}/{table_name}/{date_column}={date_value}/{table_name}.csv",
             Body=csv_buffer.getvalue()
         )
+
+
+def transforms_null_values(df: pd.DataFrame) -> pd.DataFrame:
+    columns_with_nulls = df.columns[df.isnull().any()]
+
+    for column in columns_with_nulls:
+        if is_numeric_dtype(df[column]):
+            df[column] = df[column].fillna(df[column].median())
+        else:
+            df[column] = df[column].fillna("Нет данных")
+
+    return df
