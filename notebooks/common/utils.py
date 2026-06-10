@@ -1,5 +1,5 @@
 from common.connections import s3_client, settings
-from common.ETL import extract_df_from_db, load_df_to_s3, load_partitioned_df_to_s3, extract_csv_from_s3, transforms_null_values, transforms_outliers
+from common.ETL import extract_df_from_db, load_df_to_s3, load_partitioned_df_to_s3, extract_csv_from_s3, transforms_date_values, transforms_null_values, transforms_outliers
 
 
 def create_bucket(s3_client, bucket_name: str) -> dict[str, str]:
@@ -35,6 +35,9 @@ def pipeline(table_name: str, date_column: str = None):
         )
 
     df = extract_csv_from_s3(table_name=table_name, prefix="raw")
+
+    if date_column:
+        df = transforms_date_values(df=df, date_column=date_column)
 
     df = transforms_null_values(df=df)
 

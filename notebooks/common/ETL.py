@@ -62,10 +62,9 @@ def load_partitioned_df_to_s3(
     prefix: str,
     date_column: str,
 ) -> None:
-    
-    df[date_column] = pd.to_datetime(df[date_column]).dt.date
+    partition_dates = pd.to_datetime(df[date_column]).dt.date
 
-    for date_value, part_df in df.groupby(date_column):
+    for date_value, part_df in df.groupby(partition_dates):
         csv_buffer = StringIO()
         part_df.to_csv(csv_buffer, index=False)
 
@@ -74,6 +73,14 @@ def load_partitioned_df_to_s3(
             Key=f"{prefix}/{table_name}/{date_column}={date_value}/{table_name}.csv",
             Body=csv_buffer.getvalue()
         )
+
+
+def transforms_date_values(df: pd.DataFrame, date_column: str) -> pd.DataFrame:
+    df = df.copy()
+    df[date_column] = pd.to_datetime(df[date_column])
+    df["date"] = df[date_column].dt.date
+
+    return df
 
 
 def transforms_null_values(df: pd.DataFrame) -> pd.DataFrame:
