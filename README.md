@@ -1,5 +1,9 @@
 # Домашнее задание #2. Big Data and ML
 
+## Дашборд в Superset
+
+<img width="1792" height="995" alt="image" src="https://github.com/user-attachments/assets/75fbd8ca-7c7b-465f-8fe9-c2d3b39dc42a" />
+
 ## Структура проекта
 
 ```
@@ -41,7 +45,6 @@ hse-ml-big-data/
 ### Пример файла .env
 
 ```env
-# PostgreSQL
 # Postgres
 DB_NAME=ml_analytic
 DB_USER=root
@@ -91,6 +94,3 @@ docker compose down -v
     - Обработка null значений
     - Обработка столбцов с датами
     - Обработка выбросов
-
-
-## Пример дашборда из Superset
